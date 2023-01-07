@@ -9,6 +9,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import guri.projects.a7minworkout.databinding.ActivityExerciseBinding
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,6 +31,8 @@ class Exercise : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     private var tts: TextToSpeech? = null
     private var player: MediaPlayer? = null
+
+    private var exerciseAdapter : ExerciseStatusAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +58,23 @@ class Exercise : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
 
         setupRestView()
+
+        setupExerciseStausRecyclerView()
+    }
+
+    private fun setupExerciseStausRecyclerView(){
+
+        binding?.rvExerciseStatus?.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+
+        exerciseAdapter = ExerciseStatusAdapter(exerciseList!!)
+
+
+        binding?.rvExerciseStatus?.adapter = exerciseAdapter
+
+
+
     }
 
     private fun setupRestView()
@@ -142,6 +162,10 @@ class Exercise : AppCompatActivity(), TextToSpeech.OnInitListener {
             override fun onFinish() {
                 currentExercisePosition++
                 //Toast.makeText(this@Exercise, "end", Toast.LENGTH_SHORT).show()
+
+                exerciseList!![currentExercisePosition].setIsSelected(true)
+
+                exerciseAdapter!!.notifyDataSetChanged()
                 setupExerciseView()
             }
 
@@ -163,6 +187,11 @@ class Exercise : AppCompatActivity(), TextToSpeech.OnInitListener {
             }
 
             override fun onFinish() {
+
+                exerciseList!![currentExercisePosition].setIsSelected(false)
+                exerciseList!![currentExercisePosition].setIsCompleted(true)
+                exerciseAdapter!!.notifyDataSetChanged()
+
 
                 if(currentExercisePosition < exerciseList?.size!! - 1)
                 {
