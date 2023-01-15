@@ -10,6 +10,7 @@ The app is built using Room, Coroutines, and RecyclerView to ensure a smooth use
 - A 7-minute workout routine with 12 exercises
 - History 
 - Built with Room, Coroutines, and RecyclerView for efficient and responsive performance
+- Text to Speech for naming the exercises before starting
 
 ## Built with
 
